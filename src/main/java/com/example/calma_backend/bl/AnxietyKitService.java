@@ -1,41 +1,46 @@
 package com.example.calma_backend.bl;
 
 
+import com.example.calma_backend.dao.AnxietyKitRepository;
 import com.example.calma_backend.dto.AnxietyKitDTO;
+import com.example.calma_backend.model.AnxietyKit;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnxietyKitService {
-    // Lista simulada de recursos del kit de control de ansiedad
+
+    private final AnxietyKitRepository anxietyKitRepository;
+
+    public AnxietyKitService(AnxietyKitRepository anxietyKitRepository) {
+        this.anxietyKitRepository = anxietyKitRepository;
+    }
+
+    /**
+     * Obtiene todos los recursos del kit de ansiedad desde la base de datos.
+     *
+     * @return Una lista de AnxietyKitDTO con los recursos del kit.
+     */
     public List<AnxietyKitDTO> getAnxietyKit() {
-        return Arrays.asList(
-                new AnxietyKitDTO(
-                        "Respiración Profunda",
-                        "Un ejercicio de respiración 4-7-8 para calmarte.",
-                        "audio",
-                        "https://soundcloud.com/tupsicologa-cristiana/ejercicio-de-respiracio-n?si=a019b7e8dbfd4334b448c9b6d9714f23&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing"
-                ),
-                new AnxietyKitDTO(
-                        "Meditación Guiada",
-                        "Una meditación guiada para manejar la ansiedad.",
-                        "audio",
-                        "https://soundcloud.com/meditacionmaestro/meditacion-guiada-para-dormir?si=228533c37b2d4082b0515cd6e906663b&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing"
-                ),
-                new AnxietyKitDTO(
-                        "Texto Motivacional",
-                        "Recuerda: La ansiedad es temporal y tú tienes el control.",
-                        "text",
-                        null
-                ),
-                new AnxietyKitDTO(
-                        "Imagen Relajante",
-                        "Una imagen de la naturaleza para ayudarte a encontrar calma.",
-                        "image",
-                        "https://i.pinimg.com/736x/1e/77/03/1e77037e9729bdd47ddb20225ff54857.jpg"
-                )
+        return anxietyKitRepository.findAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Convierte una entidad AnxietyKit en un DTO.
+     *
+     * @param anxietyKit La entidad a convertir.
+     * @return Un objeto AnxietyKitDTO.
+     */
+    private AnxietyKitDTO toDTO(AnxietyKit anxietyKit) {
+        return new AnxietyKitDTO(
+                anxietyKit.getTitle(),
+                anxietyKit.getDescription(),
+                anxietyKit.getType(),
+                anxietyKit.getResourceUrl()
         );
     }
 }
