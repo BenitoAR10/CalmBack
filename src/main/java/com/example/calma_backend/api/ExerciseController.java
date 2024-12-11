@@ -29,21 +29,21 @@ public class ExerciseController {
         return exerciseService.getExercisesByCategory(category);
     }
 
-    // Agregar a favoritos
-    @PostMapping("/exercises/favorites")
-    public String addToFavorites(@RequestParam String title) {
-        boolean added = exerciseService.addToFavorites(title);
+    // Agregar un ejercicio a favoritos por ID
+    @PostMapping("/exercises/{id}/favorites")
+    public String addToFavorites(@PathVariable Long id) {
+        boolean added = exerciseService.addToFavorites(id);
         return added ? "Exercise added to favorites." : "Exercise not found or already in favorites.";
     }
 
-    // Quitar de favoritos
-    @DeleteMapping("/exercises/favorites")
-    public String removeFromFavorites(@RequestParam String title) {
-        boolean removed = exerciseService.removeFromFavorites(title);
+    // Quitar un ejercicio de favoritos por ID
+    @DeleteMapping("/exercises/{id}/favorites")
+    public String removeFromFavorites(@PathVariable Long id) {
+        boolean removed = exerciseService.removeFromFavorites(id);
         return removed ? "Exercise removed from favorites." : "Exercise not found in favorites.";
     }
 
-    // Obtener todos los favoritos
+    // Obtener todos los ejercicios favoritos
     @GetMapping("/exercises/favorites")
     public List<ExerciseDTO> getFavorites() {
         return exerciseService.getFavorites();

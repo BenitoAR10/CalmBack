@@ -1,18 +1,30 @@
-package com.example.calma_backend.dto;
+package com.example.calma_backend.model;
 
-public class ExerciseDTO {
+
+import jakarta.persistence.*;
+
+@Entity
+public class Exercises {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
     private String description;
     private String category;
     private String audioUrl;
     private String imageUrl;
+    @Column(nullable = false)
+    private boolean isFavorite = false;
 
-    public ExerciseDTO(String title, String description, String category, String audioUrl, String imageUrl) {
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.audioUrl = audioUrl;
-        this.imageUrl = imageUrl;
+    public Exercises() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -53,5 +65,13 @@ public class ExerciseDTO {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }
